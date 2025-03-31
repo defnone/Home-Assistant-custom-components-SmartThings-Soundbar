@@ -63,6 +63,7 @@ class SmartThingsSoundbarMediaPlayer(MediaPlayerEntity):
         self._source = ""
         self._source_list = []
         self._media_title = ""
+        self._sound_from = None
 
     def update(self):
         SoundbarApi.device_update(self)
@@ -146,3 +147,12 @@ class SmartThingsSoundbarMediaPlayer(MediaPlayerEntity):
     @property
     def source_list(self):
         return self._source_list
+
+    @property
+    def extra_state_attributes(self):
+        attributes = {}
+
+        if self._sound_from is not None:
+            attributes["sound_from"] = self._sound_from
+
+        return attributes

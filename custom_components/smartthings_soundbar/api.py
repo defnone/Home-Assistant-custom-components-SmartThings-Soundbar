@@ -43,6 +43,7 @@ class SoundbarApi:
         device_muted = SoundbarApi.extractor(data, "main.mute.value") != "unmuted"
         device_volume = SoundbarApi.extractor(data, "main.volume.value")
         device_volume = min(int(device_volume) / entity._max_volume, 1)
+        device_sound_from = SoundbarApi.extractor(data, "main.detailName.value")
 
         if switch_state == "on":
             if device_source.lower() in CONTROLLABLE_SOURCES:
@@ -60,6 +61,7 @@ class SoundbarApi:
         entity._source_list = device_all_sources if type(device_all_sources) is list else device_all_sources["value"]
         entity._muted = device_muted
         entity._source = device_source
+        entity._sound_from = device_sound_from if device_sound_from is not None else entity._sound_from
         if entity._state in [STATE_PLAYING, STATE_PAUSED] and 'trackDescription' in data['main']:
             entity._media_title = SoundbarApi.extractor(data, "main.trackDescription.value")
         else:
